@@ -43,4 +43,4 @@ Al validar el KPI contra una temporada real, los resultados coinciden con la rea
 
 El dataset ya procesado (`kpi_temporada.csv`) viene incluido, así que puedes ejecutar directamente el análisis (`02`) sin necesidad de descargar nada.
 
-> **Nota:** `nba_api` solo funciona desde una IP residencial (no en la nube ni en Colab), y descargar la temporada entera tarda horas. Por eso incluyo el CSV ya generado, para que el proyecto sea reproducible al instante.
+> **Nota:** `nba_api` solo funciona desde una IP residencial (no en la nube ni en Colab), y descargar la temporada entera tarda un rato. Por eso incluyo el CSV ya generado, para que el proyecto sea reproducible al instante.
