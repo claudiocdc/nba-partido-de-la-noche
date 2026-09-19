@@ -26,6 +26,7 @@ El KPI combina cuatro ingredientes, cada uno normalizado (0-1) y con su peso:
 | `02_analisis_temporada.ipynb` | Valida el KPI sobre la temporada completa (1.329 partidos) |
 
 ## Hallazgos clave
+![Mapa de calor de los enfrentamientos más entretenidos](heatmap.png)
 
 Al validar el KPI contra una temporada real, los resultados coinciden con la realidad:
 
