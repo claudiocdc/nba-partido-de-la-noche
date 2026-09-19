@@ -1,4 +1,4 @@
-# NBA — El Partido de la Noche
+# NBA - El Partido de la Noche
 
 **Un KPI (0-100) que puntúa cómo de entretenido es cada partido de la NBA, para responder a una pregunta simple: ¿qué partido veo esta noche?**
 
