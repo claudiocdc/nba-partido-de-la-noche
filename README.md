@@ -1,61 +1,46 @@
-# KPI del Partido de la Noche — NBA
+# NBA — El Partido de la Noche
 
-Cada noche se juegan varios partidos de la NBA. ¿Cuál merece la pena ver?
-Este proyecto calcula un **KPI de 0 a 100** para cada partido de una fecha y los
-ordena, para responder a esa pregunta con datos en lugar de intuición.
+**Un KPI (0-100) que puntúa cómo de entretenido es cada partido de la NBA, para responder a una pregunta simple: ¿qué partido veo esta noche?**
 
-## ¿Cómo funciona el KPI?
+## El problema
 
-El KPI combina cuatro factores. Cada uno se normaliza a una escala de 0 a 1 y se
-pondera según su importancia:
+Cada noche hay entre 5 y 10 partidos de la NBA y no da tiempo a verlos todos. ¿Cuál merece la pena? En lugar de fiarme del instinto, construí una métrica que puntúa de forma objetiva lo entretenido que es un partido.
 
-| Factor      | Qué mide                                              | Peso |
-|-------------|------------------------------------------------------|------|
-| Igualdad    | Lo apretado del marcador final                       | 45 % |
-| Estrella    | La mejor actuación individual (Game Score de Hollinger) | 30 % |
-| Prórrogas   | Si el partido se fue a la prórroga                   | 20 % |
-| Ritmo       | Los puntos totales anotados                          | 5 %  |
+## El KPI
 
-Los pesos son una **hipótesis de partida**: reflejan mi criterio sobre qué hace
-interesante un partido (prioriza la igualdad y las grandes actuaciones). Se pueden
-recalibrar mirando datos reales, y están centralizados en un único lugar del código
-para facilitarlo.
+El KPI combina cuatro ingredientes, cada uno normalizado (0-1) y con su peso:
 
-## Fuente de datos
+| Componente | Qué mide | Peso |
+|---|---|---|
+| **Igualdad** | Lo ajustado del marcador final | 45% |
+| **Estrella** | La mejor actuación individual (Game Score) | 30% |
+| **Prórrogas** | Si hubo tiempo extra (y cuántos) | 20% |
+| **Ritmo** | Puntos totales del partido | 5% |
 
-- **[nba_api](https://github.com/swar/nba_api)** — cliente de la API oficial de
-  estadísticas de la NBA (stats.nba.com). Datos oficiales de la liga.
-- La actuación individual se mide con el **Game Score de Hollinger**, una métrica
-  estándar de baloncesto que resume el rendimiento de un jugador en un solo número
-  a partir del box score tradicional.
+## Estructura del proyecto
 
-## Uso
+| Notebook | Qué hace |
+|---|---|
+| `00_recoleccion_datos.ipynb` | Descarga toda la temporada 2025-26 vía `nba_api` y calcula el KPI de cada partido → `kpi_temporada.csv` |
+| `01_kpi_diario.ipynb` | El motor del KPI para el día a día: le das una fecha, te dice qué partido ver |
+| `02_analisis_temporada.ipynb` | Valida el KPI sobre la temporada completa (1.329 partidos) |
 
-1. Instala las dependencias: `pip install nba_api pandas`
-2. En el notebook, indica la fecha a analizar.
-3. Ejecuta todas las celdas.
-4. Obtienes el ranking de los partidos de esa noche, con el "partido de la noche"
-   coronado y el desglose de cada métrica.
+## Hallazgos clave
 
-> **Nota:** la API de la NBA solo responde a IPs residenciales, así que el notebook
-> debe ejecutarse en un ordenador local (no funciona desde la nube, como Colab).
+Al validar el KPI contra una temporada real, los resultados coinciden con la realidad:
+
+-  **El mejor partido** fue el DEN vs MIN de Navidad (KPI 85.0), que la prensa bautizó como el *"Christmas Miracle"* de Denver.
+-  **El equipo más divertido** fue Denver, con diferencia sobre el resto.
+-  **El "MVP del entretenimiento"** fue Shai Gilgeous-Alexander — y el top 4 reprodujo el podio real del MVP de la temporada.
+-  Solo un **7.45%** de los partidos son verdaderos "partidazos" (KPI > 60).
+-  **La liga se calienta en playoffs:** el KPI medio se dispara en las rondas finales.
 
 ## Tecnologías
 
-Python · pandas · nba_api · Jupyter Notebook
+`Python` · `pandas` · `nba_api` · `seaborn` · `matplotlib` · `Jupyter`
 
-## Notas de diseño
+## Cómo ejecutarlo
 
-- Es una **v1**: los umbrales (qué margen es "paliza", qué Game Score es "de época")
-  y los pesos son decisiones calibrables, no verdades absolutas.
-- El código separa el **motor** (funciones de puntuación + pesos) de la recolección
-  de datos, para poder recalibrar el criterio sin tocar la lógica.
+El dataset ya procesado (`kpi_temporada.csv`) viene incluido, así que puedes ejecutar directamente el análisis (`02`) sin necesidad de descargar nada.
 
-## Próximos pasos
-
-- Automatizar la ejecución diaria y recibir el ranking por email.
-- Procesar la temporada completa para encontrar el partido más emocionante del año.
-
----
-
-Proyecto personal de análisis de datos.
+> **Nota:** `nba_api` solo funciona desde una IP residencial (no en la nube ni en Colab), y descargar la temporada entera tarda horas. Por eso incluyo el CSV ya generado, para que el proyecto sea reproducible al instante.
